@@ -1,9 +1,9 @@
 {
-  "name": "webpack-boilerplate",
+  "name": "practicum",
   "version": "2.0.1",
-  "description": "Sensible webpack 5 boilerplate using Babel and PostCSS with a hot dev server and an optimized production build.",
+  "description": "practicum project.",
   "main": "index.js",
-  "author": "Tania Rascia",
+  "author": "Isabelle Cuisset",
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
@@ -12,8 +12,7 @@
   },
   "keywords": [
     "webpack",
-    "webpack 5",
-    "webpack boilerplate"
+    "webpack 5"
   ],
   "devDependencies": {
     "@babel/core": "^7.13.14",
@@ -41,7 +40,7 @@
     "prettier-webpack-plugin": "^1.2.0",
     "sass-loader": "^11.0.1",
     "style-loader": "^2.0.0",
-    "webpack": "^5.28.0",
+    "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3"
