@@ -6,8 +6,8 @@
   "author": "Isabelle Cuisset",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack serve --config config/webpack.dev.js",
-    "build": "webpack serve --config config/webpack.prod.js"
+    "build": "rm -rf dist && webpack",
+    "dev": "webpack serve"
   },
   "keywords": [
     "webpack",

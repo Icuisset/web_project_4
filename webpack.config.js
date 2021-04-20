@@ -1,55 +1,53 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const { merge } = require('webpack-merge')
+const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const paths = require('./paths')
-const common = require('./webpack.common.js')
-
-module.exports = merge(common, {
-  mode: 'production',
-  devtool: false,
+module.exports = {
+  entry: {
+    main: './src/index.js'
+  },
   output: {
-    path: paths.build,
-    publicPath: '/',
-    filename: 'js/[name].[contenthash].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.js',
+    publicPath: ''
+  },
+  devtool: 'inline-source-map',
+  mode: 'development',
+  devServer: {
+    contentBase: path.resolve(__dirname, './dist'), 
+    compress: true,
+    port: 8080,
+    open: true
   },
   module: {
     rules: [
       {
-        test: /\.(scss|css)$/,
+        test: /\.js$/,
+        loader: "babel-loader",
+        exclude: "/node_modules/"
+      },
+      {
+        test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 2,
-              sourceMap: false,
-              modules: true,
-            },
+            loader: "css-loader"
           },
-          'postcss-loader',
-          'sass-loader',
+          "postcss-loader"
         ],
       },
-    ],
+      {
+        test: /\.(png|svg|jpg|gif|woff(2)?|eot|ttf|otf)$/,
+        type: "asset/resource"
+      },
+    ]
   },
   plugins: [
-    // Extracts CSS into separate files
-    new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css',
-      chunkFilename: '[id].css',
+    new HtmlWebpackPlugin({
+      template: "./src/index.html" 
     }),
-  ],
-  optimization: {
-    minimize: true,
-    minimizer: [new CssMinimizerPlugin(), '...'],
-    runtimeChunk: {
-      name: 'runtime',
-    },
-  },
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
-  },
-})
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin(),
+  ]
+}
