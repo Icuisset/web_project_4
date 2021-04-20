@@ -1,35 +1,20 @@
-// Test import of a JavaScript module
-//import { example } from '@/js/example'
-
-// Test import of an asset
-//import webpackLogo from '@/images/webpack-logo.svg'
-
-// Appending to the DOM
-//const logo = document.createElement('img')
-//logo.src = webpackLogo
-
-//const heading = document.createElement('h1')
-//heading.textContent = example()
-
-//const app = document.querySelector('#root')
-//app.append(logo, heading)
 
 ///////////////////////////////////////
 //    IMPORTED CLASSES
 ///////////////////////////////////////
 
 // Test import of styles
-import './styles/index.css'
+import './page/index.css'
 
-import FormValidator from '../scripts/formValidator.js'
-import Card from '../scripts/card.js'
-import PopupWithImage from '../scripts/popupWithImage.js'
-import PopupWithForm from '../scripts/popupWithForm.js'
+import FormValidator from './components/formValidator.js'
+import Card from './components/card.js'
+import PopupWithImage from './components/popupWithImage.js'
+import PopupWithForm from './components/popupWithForm.js'
 
-import Userinfo from '../scripts/userInfo.js'
-import Section from '../scripts/section.js'
-import Api from '../scripts/api.js'
-import Popup from '../scripts/popup.js'
+import Userinfo from './components/userInfo.js'
+import Section from './components/section.js'
+import Api from './components/api.js'
+import Popup from './components/popup.js'
 
 ///////////////////////////////////////
 //    GLOBAL VARIABLES

@@ -4,6 +4,11 @@ const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
 const paths = require('./paths')
 
+// added
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+
+
 module.exports = merge(common, {
   // Set the mode to development or production
   mode: 'development',
@@ -32,8 +37,25 @@ module.exports = merge(common, {
             loader: 'css-loader',
             options: { sourceMap: true, importLoaders: 1, modules: true },
           },
-          { loader: 'postcss-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } },
+          //{ loader: 'postcss-loader', options: { sourceMap: true } },
+          //{ loader: 'sass-loader', options: { sourceMap: true } },
+      ],
+      },
+      // added
+      {
+        test: /\.(scss|css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: false,
+              modules: true,
+            },
+          },
+          //'postcss-loader',
+          //'sass-loader',
         ],
       },
     ],
@@ -42,5 +64,24 @@ module.exports = merge(common, {
   plugins: [
     // Only update what has changed on hot reload
     new webpack.HotModuleReplacementPlugin(),
+    // added
+    // Extracts CSS into separate files
+    new MiniCssExtractPlugin({
+      filename: 'styles/[name].[contenthash].css',
+      chunkFilename: '[id].css',
+    }),
   ],
+  // added
+  optimization: {
+    minimize: true,
+    minimizer: [new CssMinimizerPlugin(), '...'],
+    runtimeChunk: {
+      name: 'runtime',
+    },
+  },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
 })
