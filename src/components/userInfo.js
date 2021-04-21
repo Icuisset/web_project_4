@@ -20,6 +20,10 @@ export default class UserInfo {
     return this._about
   }
 
+  getUserAvatar() {
+    return this._avatar
+  }
+
   setUserInfo() {
     nameValue.textContent = this._name
     aboutValue.textContent = this._about

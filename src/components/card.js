@@ -1,4 +1,6 @@
-import { confirmButton } from '../index.js';
+import {
+  confirmButton
+} from '../index.js';
 class Card {
   constructor(
     cardData,
@@ -47,20 +49,18 @@ class Card {
 
   // CHECK IF OK TO DELETE
 
-  _confirmToDelete() {
+  _confirmToDelete(deleteButton) {
     console.log(confirmButton);
-    confirmButton.addEventListener('click', () => this._deleteElement());
+    confirmButton.addEventListener('click', () => {
+      //if (deleteButton.classList.contains("to-delete")) 
+      //{ const deletedCard = deleteButton.closest(".element");
+      if(confirmButton.id + "ok" === deleteButton.id )
+      { console.log(confirmButton.id + "ok" === deleteButton.id );
+        const deletedCard = deleteButton.closest(".element");
+        deletedCard.remove();}
+    });
   }
 
-  _removeDeleteEventListener() {
-    confirmButton.removeEventListener('click', () => this._deleteElement());
-  }
-
-  _deleteElement() {
-    this._updateApiDelete(this._id);
-    console.log(this._updateApiDelete(this._id));
-    this._card.remove();
-  }
 
   /* Event listener for Delete Button */
 
@@ -69,12 +69,14 @@ class Card {
     if (this._owner === this._userID) {
       deleteButton.addEventListener('click', () => {
         this._openConfirmDelete();
-        this._confirmToDelete();
+        confirmButton.setAttribute("id", this._id);
+        deleteButton.classList.add("to-delete");
+        deleteButton.setAttribute("id", this._id + "ok");
+        this._confirmToDelete(deleteButton);
       });
     } else {
       deleteButton.remove()
     }
-    this._removeDeleteEventListener();
   }
 
   _likeElement(likeButton) {

@@ -36,6 +36,7 @@ const editButton = document.querySelector('.edit-button')
 const addButton = document.querySelector('.add-button')
 const confirmButton = document.querySelector('.confirm-button')
 
+
 // access profile form
 const formElementProfile = document.querySelector('.popup__form_type_profile')
 const nameInput = formElementProfile.querySelector('.popup__input_value_name')
@@ -199,6 +200,14 @@ function openConfirmDelete() {
   confirmDeletePopUp.openPopUp()
 }
 
+// delete card
+function deleteCard() {
+ const DeleteCardId = confirmButton.getAttribute("id");
+ updateApiDelete(DeleteCardId);
+ confirmDeletePopUp.closePopUp();
+ const cardtoDelete = document.querySelector(".card-to-delete").closest(".element");
+
+}
 
 // UPDATES TO API
 
@@ -212,7 +221,6 @@ function updateApiDelete(cardId) {
     .catch((err) => {
       console.log(err)
     })
-  confirmDeletePopUp.closePopUp();
 }
 
 
@@ -285,6 +293,9 @@ api
     const user = new Userinfo(result);
     nameInput.placeholder = user.getUserName();
     aboutInput.placeholder = user.getUserAbout();
+    nameValue.innerHTML = user.getUserName();
+    aboutValue.innerHTML = user.getUserAbout();
+    avatarImage.style.backgroundImage = 'url(' + user.getUserAvatar() + ')';
   })
   .catch((err) => {
     console.log(err)
@@ -296,7 +307,7 @@ const picturePopUp = new PopupWithImage('.popup_type_picture')
 picturePopUp.setEventListeners()
 
 // create confirm delete popup
-const confirmDeletePopUp = new Popup('.popup_type_confirmDelete')
+const confirmDeletePopUp = new Popup ('.popup_type_confirmDelete');
 confirmDeletePopUp.setEventListeners()
 
 // instruction to create form validators
@@ -345,6 +356,12 @@ editButton.addEventListener('click', () => {
 
 addButton.addEventListener('click', () => {
   newPlacePopUp.openPopUp()
+})
+
+// instruction for confirm button when deleting a card
+
+confirmButton.addEventListener('click', () => {
+  deleteCard()
 })
 
 // instruction for avatar image on click
