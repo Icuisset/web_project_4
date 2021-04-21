@@ -5,7 +5,6 @@ class Card {
     templateSelector,
     openPopUpOnClick,
     openConfirmDelete,
-    closeConfirmDelete,
     updateApiDelete,
     updateApiAddLike,
     updateApiRemoveLike
@@ -32,7 +31,6 @@ class Card {
     this._openPopUpOnClick = openPopUpOnClick
 
     this._openConfirmDelete = openConfirmDelete
-    this._closeConfirmDelete = closeConfirmDelete
 
     this._updateApiDelete = updateApiDelete
     this._updateApiAddLike = updateApiAddLike
@@ -49,18 +47,18 @@ class Card {
   // CHECK IF OK TO DELETE
 
   _checkandDelete() {
-    const confirmButton = document.querySelector('.confirm-button')
+    const confirmButton = document.querySelector('.confirm-button');
     confirmButton.addEventListener('click', () => {
-      this._deleteElement()
+      this._deleteElement();
     })
   }
+  
   // BUTTONS METHODS
 
   _deleteElement() {
     console.log(this._id)
     this._updateApiDelete(this._id)
     this._card.remove()
-    this._closeConfirmDelete()
   }
 
   /* Event listener for Delete Button */

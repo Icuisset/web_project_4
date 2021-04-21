@@ -93,7 +93,7 @@ function profileFormSubmit() {
   api
     .editUserInfo(profileNameInput, profileAboutInput)
     .then((result) => {
-      console.log(result)
+      console.log(result);
       saveProfileButton.innerHTML = 'Saved'
     })
     .catch((err) => {
@@ -116,6 +116,7 @@ function newPlaceFormSubmit() {
   newPlace.link = placeImageLinkInput
   createPlaceButton.innerHTML = 'Saving...'
 
+
   // post New created Card to Api
   api
     .postNewCard(placeTitleInput, placeImageLinkInput)
@@ -129,7 +130,6 @@ function newPlaceFormSubmit() {
         '.element-template',
         openPopUpOnClick,
         openConfirmDelete,
-        closeConfirmDelete,
         updateApiDelete,
         updateApiAddLike,
         updateApiRemoveLike
@@ -172,6 +172,10 @@ function newAvatarFormSubmit() {
   newAvatarPopUp.resetInputValues()
 }
 
+// function to submit a deleted card 
+
+
+
 // OPENING POP UPS
 
 // function to open picture popup on click
@@ -184,24 +188,23 @@ function openConfirmDelete() {
   confirmDeletePopUp.openPopUp()
 }
 
-// function to close confirm delete popup
-function closeConfirmDelete() {
-  confirmDeletePopUp.closePopUp()
-}
 
 // UPDATES TO API
 
-// function to update Api deleting cards
-function updateApiDelete(id) {
-  api
-    .deleteCard(id)
-    .then((result) => {
-      console.log(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+// function to delete Card in Api
+function updateApiDelete(cardId) {
+api
+  .deleteCard(cardId)
+  .then((result) => {
+    console.log(result)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+  confirmDeletePopUp.closePopUp();
 }
+
+
 
 // function to update Api adding a Card like
 function updateApiAddLike(id) {
@@ -246,7 +249,6 @@ api
             '.element-template',
             openPopUpOnClick,
             openConfirmDelete,
-            closeConfirmDelete,
             updateApiDelete,
             updateApiAddLike,
             updateApiRemoveLike
@@ -269,8 +271,10 @@ api
 api
   .getUserInfo()
   .then((result) => {
-    const user = new Userinfo(result)
-    user.setUserInfo()
+    console.log(result);
+    const user = new Userinfo(result);
+    nameInput.placeholder = user.getUserName();
+    aboutInput.placeholder = user.getUserAbout();
   })
   .catch((err) => {
     console.log(err)
@@ -301,6 +305,7 @@ const profilePopUp = new PopupWithForm(
   '.popup_type_editProfile',
   profileFormSubmit
 )
+
 
 const newPlacePopUp = new PopupWithForm(
   '.popup_type_newPlace',
