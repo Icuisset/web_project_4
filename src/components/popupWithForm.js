@@ -14,12 +14,13 @@ export default class PopupWithForm extends Popup {
 
   getInputValues() {
     const inputValues = {}
-    this._inputs.forEach((input) => {
+    this._inputs.forEach((input) => { 
       const inputName = input.name
       const inputValue = input.value
-      inputValues[inputName] = inputValue
+      inputValues[inputName] = inputValue 
     })
-    return inputValues
+    console.log(inputValues);
+    return(inputValues);
   }
 
   // new public method to reinitialize inputs values after submitting a form ( probably more elegant indeed than my previous trials...)
@@ -38,8 +39,10 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners()
     this._formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault()
+      evt.preventDefault();
       this._formSubmit()
     })
   }
 }
+
+

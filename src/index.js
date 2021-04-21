@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////
 //    IMPORTED CLASSES
 ///////////////////////////////////////
@@ -42,9 +41,14 @@ const nameInput = formElementProfile.querySelector('.popup__input_value_name')
 const aboutInput = formElementProfile.querySelector('.popup__input_value_about')
 const nameValue = document.querySelector('.profile__name')
 const aboutValue = document.querySelector('.profile__about')
+const saveProfileButton = document.querySelector('.save-button')
+
+// access avatar form
+const formElementAvatar = document.querySelector('.popup__form_type_newAvatar')
+const saveAvatarButton = document.querySelector('.saveAvatar-button')
 const avatarImage = document.querySelector('.avatar')
 const avatarHover = document.querySelector('.avatar-hover')
-const saveProfileButton = document.querySelector('.save-button')
+
 
 // access place form
 const formElementPlace = document.querySelector('.popup__form_type_newPlace')
@@ -56,9 +60,7 @@ const placeImageUrl = formElementPlace.querySelector(
 )
 const createPlaceButton = document.querySelector('.create-button')
 
-// access avatar form
-const formElementAvatar = document.querySelector('.popup__form_type_newAvatar')
-const saveAvatarButton = document.querySelector('.saveAvatar-button')
+
 
 //const elementTemplate = document.querySelector(".element-template").content.querySelector(".element");//
 const elementsList = document.querySelector('.elements')
@@ -84,7 +86,10 @@ const api = new Api({
 // function to submit profile form and update user info
 
 function profileFormSubmit() {
-  const { profileNameInput, profileAboutInput } = profilePopUp.getInputValues()
+  const {
+    profileNameInput,
+    profileAboutInput
+  } = profilePopUp.getInputValues()
 
   nameValue.textContent = profileNameInput
   aboutValue.textContent = profileAboutInput
@@ -151,30 +156,51 @@ function newPlaceFormSubmit() {
 // function to submit new Avatar image and update profile image
 
 function newAvatarFormSubmit() {
-  const { avatarLink } = newAvatarPopUp.getInputValues()
 
-  avatarImage.style.backgroundImage = 'url(' + avatarLink + ')'
-  saveAvatarButton.innerHTML = 'Saving...'
+  const link = document
+    .querySelector('.popup__input_value_newAvatarLink')
+    .value;
+  if (link == '') {
+    console.log('no input');
+  } else {
+    console.log(link);
+    avatarImage.style.backgroundImage = 'url(' + link + ')';
+    console.log(avatarImage);
+    saveAvatarButton.innerHTML = 'Saving...';
 
-  // post New Avatar link to Api
-  api
-    .editUserAvatar(avatarLink)
-    .then((result) => {
-      console.log(result)
-      saveAvatarButton.innerHTML = 'Saved'
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    // post New Avatar link to Api
+    api
+      .editUserAvatar(link)
+      .then((result) => {
+        console.log(result);
+        avatarImage.style.backgroundImage = 'url(' + result.avatar + ')'
+        saveAvatarButton.innerHTML = 'Saved'
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
-  newAvatarPopUp.closePopUp()
+    newAvatarPopUp.closePopUp()
 
-  newAvatarPopUp.resetInputValues()
+    newAvatarPopUp.resetInputValues()
+  }
 }
 
-// function to submit a deleted card 
+function onClick() {
+  var val = document
+    .querySelector('.popup__input_value_newAvatarLink')
+    .value;
+  if (val == '') {
+    console.log('no input');
+  } else {
+    console.log(val);
+    return (val)
+  }
+}
 
-
+saveAvatarButton.addEventListener("click", function () {
+  onClick();
+})
 
 // OPENING POP UPS
 
@@ -193,14 +219,14 @@ function openConfirmDelete() {
 
 // function to delete Card in Api
 function updateApiDelete(cardId) {
-api
-  .deleteCard(cardId)
-  .then((result) => {
-    console.log(result)
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+  api
+    .deleteCard(cardId)
+    .then((result) => {
+      console.log(result)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   confirmDeletePopUp.closePopUp();
 }
 
@@ -239,8 +265,7 @@ function updateApiRemoveLike(id) {
 api
   .getInitialCards()
   .then((result) => {
-    const cardList = new Section(
-      {
+    const cardList = new Section({
         data: result,
         renderer: (card) => {
           const newCard = new Card(
