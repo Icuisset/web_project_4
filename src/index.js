@@ -3,7 +3,7 @@
 ///////////////////////////////////////
 
 // Test import of styles
-//import './page/index.css'
+import './page/index.css'
 
 import FormValidator from './components/formValidator.js'
 import Card from './components/card.js'
@@ -34,6 +34,7 @@ const settings = {
 
 const editButton = document.querySelector('.edit-button')
 const addButton = document.querySelector('.add-button')
+const confirmButton = document.querySelector('.confirm-button')
 
 // access profile form
 const formElementProfile = document.querySelector('.popup__form_type_profile')
@@ -185,22 +186,6 @@ function newAvatarFormSubmit() {
     newAvatarPopUp.resetInputValues()
   }
 }
-
-function onClick() {
-  var val = document
-    .querySelector('.popup__input_value_newAvatarLink')
-    .value;
-  if (val == '') {
-    console.log('no input');
-  } else {
-    console.log(val);
-    return (val)
-  }
-}
-
-saveAvatarButton.addEventListener("click", function () {
-  onClick();
-})
 
 // OPENING POP UPS
 
@@ -376,6 +361,8 @@ avatarImage.addEventListener('mouseout', () => {
   avatarHover.style.opacity = 0
 })
 
+
+
 ///////////////////////////////////////
 //    EXPORT
 ////////////////////////////////////////
@@ -388,4 +375,5 @@ export {
   avatarImage,
   placeTitleInput,
   placeImageUrl,
+  confirmButton
 }

@@ -1,3 +1,4 @@
+import { confirmButton } from '../index.js';
 class Card {
   constructor(
     cardData,
@@ -46,34 +47,34 @@ class Card {
 
   // CHECK IF OK TO DELETE
 
-  _checkandDelete() {
-    const confirmButton = document.querySelector('.confirm-button');
-    confirmButton.addEventListener('click', () => {
-      this._deleteElement();
-    })
+  _confirmToDelete() {
+    console.log(confirmButton);
+    confirmButton.addEventListener('click', () => this._deleteElement());
   }
-  
-  // BUTTONS METHODS
+
+  _removeDeleteEventListener() {
+    confirmButton.removeEventListener('click', () => this._deleteElement());
+  }
 
   _deleteElement() {
-    console.log(this._id)
-    this._updateApiDelete(this._id)
-    this._card.remove()
+    this._updateApiDelete(this._id);
+    console.log(this._updateApiDelete(this._id));
+    this._card.remove();
   }
 
   /* Event listener for Delete Button */
 
   _handleDeleteButton() {
-    const deleteButton = this._card.querySelector('.delete-button')
-
+    const deleteButton = this._card.querySelector('.delete-button');
     if (this._owner === this._userID) {
       deleteButton.addEventListener('click', () => {
-        this._openConfirmDelete()
-        this._checkandDelete()
-      })
+        this._openConfirmDelete();
+        this._confirmToDelete();
+      });
     } else {
       deleteButton.remove()
     }
+    this._removeDeleteEventListener();
   }
 
   _likeElement(likeButton) {
@@ -90,7 +91,9 @@ class Card {
   /* Event listener for Like Button */
   _handleLikeButton() {
     const likeButton = this._card.querySelector('.like-button');
-    if(this._likes.some( i => i._id === this._userID)) {likeButton.classList.add('like-button_activated')};
+    if (this._likes.some(i => i._id === this._userID)) {
+      likeButton.classList.add('like-button_activated')
+    };
     likeButton.addEventListener('click', () => {
       this._likeElement(likeButton);
     })
@@ -115,6 +118,7 @@ class Card {
   getCardId() {
     return this._id
   }
+
 
   /* Method to create each card*/
 

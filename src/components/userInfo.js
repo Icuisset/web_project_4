@@ -1,4 +1,4 @@
-import { nameValue, aboutValue, avatarImage } from './index.js'
+import { nameValue, aboutValue, avatarImage } from '../index.js'
 
 export default class UserInfo {
   constructor(data) {
