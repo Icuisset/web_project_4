@@ -205,8 +205,6 @@ function deleteCard() {
  const DeleteCardId = confirmButton.getAttribute("id");
  updateApiDelete(DeleteCardId);
  confirmDeletePopUp.closePopUp();
- const cardtoDelete = document.querySelector(".card-to-delete").closest(".element");
-
 }
 
 // UPDATES TO API

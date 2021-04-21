@@ -52,8 +52,6 @@ class Card {
   _confirmToDelete(deleteButton) {
     console.log(confirmButton);
     confirmButton.addEventListener('click', () => {
-      //if (deleteButton.classList.contains("to-delete")) 
-      //{ const deletedCard = deleteButton.closest(".element");
       if(confirmButton.id + "ok" === deleteButton.id )
       { console.log(confirmButton.id + "ok" === deleteButton.id );
         const deletedCard = deleteButton.closest(".element");
@@ -70,7 +68,6 @@ class Card {
       deleteButton.addEventListener('click', () => {
         this._openConfirmDelete();
         confirmButton.setAttribute("id", this._id);
-        deleteButton.classList.add("to-delete");
         deleteButton.setAttribute("id", this._id + "ok");
         this._confirmToDelete(deleteButton);
       });
