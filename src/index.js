@@ -4,7 +4,7 @@
 ///////////////////////////////////////
 
 // Test import of styles
-import './page/index.css'
+//import './page/index.css'
 
 import FormValidator from './components/formValidator.js'
 import Card from './components/card.js'
@@ -89,16 +89,12 @@ function profileFormSubmit() {
   nameValue.textContent = profileNameInput
   aboutValue.textContent = profileAboutInput
   saveProfileButton.innerHTML = 'Saving...'
-  // checking that it works but it is very fast !
-  console.log(saveProfileButton.innerHTML)
 
   api
     .editUserInfo(profileNameInput, profileAboutInput)
     .then((result) => {
       console.log(result)
       saveProfileButton.innerHTML = 'Saved'
-      // check
-      console.log(saveProfileButton)
     })
     .catch((err) => {
       console.log(err)
@@ -119,7 +115,6 @@ function newPlaceFormSubmit() {
   newPlace.name = placeTitleInput
   newPlace.link = placeImageLinkInput
   createPlaceButton.innerHTML = 'Saving...'
-  console.log(createPlaceButton.innerHTML)
 
   // post New created Card to Api
   api

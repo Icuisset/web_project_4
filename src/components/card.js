@@ -67,7 +67,6 @@ class Card {
 
   _handleDeleteButton() {
     const deleteButton = this._card.querySelector('.delete-button')
-    console.log(this._card)
 
     if (this._owner === this._userID) {
       deleteButton.addEventListener('click', () => {
@@ -92,8 +91,11 @@ class Card {
 
   /* Event listener for Like Button */
   _handleLikeButton() {
-    const likeButton = this._card.querySelector('.like-button')
-    likeButton.addEventListener('click', () => this._likeElement(likeButton))
+    const likeButton = this._card.querySelector('.like-button');
+    if(this._likes.some( i => i._id === this._userID)) {likeButton.classList.add('like-button_activated')};
+    likeButton.addEventListener('click', () => {
+      this._likeElement(likeButton);
+    })
   }
 
   /* Event lister for Card Click */
@@ -109,6 +111,7 @@ class Card {
     const numberOfLikes = this._card.querySelector('.element__like-count')
     numberOfLikes.textContent = this._likes.length + i
   }
+
 
   /* Return ID */
   getCardId() {
