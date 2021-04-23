@@ -11,14 +11,14 @@ class FormValidator {
   }
 
   _hideErrorMessage(input) {
-    const error = document.querySelector('#' + input.id + '-error')
+    const error = this._form.querySelector('#' + input.id + '-error')
     error.textContent = ''
     error.classList.remove(this._errorClass)
     input.classList.remove(this._inputErrorClass)
   }
 
   _showErrorMessage(input) {
-    const error = document.querySelector('#' + input.id + '-error')
+    const error = this._form.querySelector('#' + input.id + '-error')
     error.textContent = input.validationMessage
     error.classList.add(this._errorClass)
     input.classList.add(this._inputErrorClass)

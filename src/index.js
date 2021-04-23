@@ -69,7 +69,8 @@ const elementsList = document.querySelector('.elements')
 
 // const for all Api requests
 
-const myId = '3a51bab15266f7f25acd79d8'
+//const myId = '3a51bab15266f7f25acd79d8'
+let myId
 
 const api = new Api({
   baseUrl: 'https://around.nomoreparties.co/v1/group-7',
@@ -147,8 +148,6 @@ function newPlaceFormSubmit() {
       elementsList.prepend(newCreatedPlaceCard)
 
       newPlacePopUp.closePopUp()
-
-      newPlacePopUp.resetInputValues()
     })
     .catch((err) => {
       console.log(err)
@@ -183,8 +182,6 @@ function newAvatarFormSubmit() {
       })
 
     newAvatarPopUp.closePopUp()
-
-    newAvatarPopUp.resetInputValues()
   }
 }
 
@@ -228,7 +225,8 @@ function updateApiAddLike(id) {
   api
     .addCardLike(id)
     .then((result) => {
-      console.log(result)
+      console.log(result, result.likes.length);
+      return result.likes.length;
     })
     .catch((err) => {
       console.log(err)
@@ -240,7 +238,8 @@ function updateApiRemoveLike(id) {
   api
     .removeCardLike(id)
     .then((result) => {
-      console.log(result)
+      console.log(result, result.likes.length);
+      return result.likes.length;
     })
     .catch((err) => {
       console.log(err)
@@ -288,12 +287,10 @@ api
   .getUserInfo()
   .then((result) => {
     console.log(result);
-    const user = new Userinfo(result);
-    nameInput.placeholder = user.getUserName();
-    aboutInput.placeholder = user.getUserAbout();
-    nameValue.innerHTML = user.getUserName();
-    aboutValue.innerHTML = user.getUserAbout();
-    avatarImage.style.backgroundImage = 'url(' + user.getUserAvatar() + ')';
+    myId = result._id;
+    console.log(myId);
+    const user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+    user.setUserInfo(result);
   })
   .catch((err) => {
     console.log(err)
@@ -384,10 +381,7 @@ avatarImage.addEventListener('mouseout', () => {
 
 export {
   nameInput,
-  nameValue,
   aboutInput,
-  aboutValue,
-  avatarImage,
   placeTitleInput,
   placeImageUrl,
   confirmButton

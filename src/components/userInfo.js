@@ -1,11 +1,16 @@
-import { nameValue, aboutValue, avatarImage } from '../index.js'
-
 export default class UserInfo {
-  constructor(data) {
-    this._name = data.name
-    this._about = data.about
-    this._avatar = data.avatar
-    this._id = data._id
+  constructor(userData, nameValue, aboutValue, avatarImage, nameInput, aboutInput) {
+    this._name = userData.name
+    this._about = userData.about
+    this._avatar = userData.avatar
+    this._id = userData._id
+
+    this._nameValue = nameValue
+    this._aboutValue = aboutValue
+    this._avatarImage = avatarImage
+
+    this._nameInput = nameInput
+    this._aboutInput = aboutInput
   }
 
   getUserId() {
@@ -24,9 +29,11 @@ export default class UserInfo {
     return this._avatar
   }
 
-  setUserInfo() {
-    nameValue.textContent = this._name
-    aboutValue.textContent = this._about
-    avatarImage.style.backgroundImage = "url('" + this._avatar + "')"
+  setUserInfo(userData) {
+    this._nameValue.textContent = this._name
+    this._aboutValue.textContent = this._about
+    this._avatarImage.style.backgroundImage = "url('" + this._avatar + "')"
+    this._nameInput.placeholder = this._name
+    this._aboutInput.placeholder = this._about
   }
 }

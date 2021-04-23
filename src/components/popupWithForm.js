@@ -15,26 +15,22 @@ export default class PopupWithForm extends Popup {
   getInputValues() {
     const inputValues = {}
     this._inputs.forEach((input) => { 
-      const inputName = input.name
-      const inputValue = input.value
-      inputValues[inputName] = inputValue 
+      const {name, value} = input
+      inputValues[name] = value 
     })
     console.log(inputValues);
     return(inputValues);
-  }
-
-  // new public method to reinitialize inputs values after submitting a form ( probably more elegant indeed than my previous trials...)
-
-  resetInputValues() {
-    this._inputs.forEach((input) => {
-      input.value = ''
-    })
   }
 
   openPopUp() {
     this.getInputValues()
     super.openPopUp()
   }
+
+  closePopUp() {
+    super.closePopUp()
+    this._formElement.reset()
+  } 
 
   setEventListeners() {
     super.setEventListeners()
