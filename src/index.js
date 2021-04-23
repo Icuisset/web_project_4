@@ -71,6 +71,7 @@ const elementsList = document.querySelector('.elements')
 
 //const myId = '3a51bab15266f7f25acd79d8'
 let myId
+console.log(myId);
 let user
 let cardList
 
@@ -89,7 +90,7 @@ const api = new Api({
 
 // CARD CREATION
 
-function createCard(newPlace,myId) {
+function createCard(newPlace, myId) {
   const newPlaceCard = new Card(
     newPlace,
     myId,
@@ -101,7 +102,7 @@ function createCard(newPlace,myId) {
     updateApiRemoveLike
   )
   const newCreatedCard = newPlaceCard.createCard()
-  cardList.addCard(newCreatedCard) 
+  cardList.addCard(newCreatedCard)
 }
 
 
@@ -123,7 +124,7 @@ function profileFormSubmit() {
     .then((result) => {
       console.log(result);
       saveProfileButton.textContent = 'Saved'
-      user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+      user = new Userinfo(result, nameValue, aboutValue, avatarImage, nameInput, aboutInput);
       user.setUserInfo(result);
       console.log(user);
       profilePopUp.closePopUp();
@@ -178,7 +179,7 @@ function newAvatarFormSubmit() {
       .editUserAvatar(link)
       .then((result) => {
         console.log(result);
-        user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+        user = new Userinfo(result, nameValue, aboutValue, avatarImage, nameInput, aboutInput);
         user.setUserInfo(result);
         saveAvatarButton.textContent = 'Saved'
         newAvatarPopUp.closePopUp()
@@ -203,9 +204,8 @@ function openConfirmDelete() {
 
 // delete card
 function deleteCard() {
- const DeleteCardId = confirmButton.getAttribute("id");
- updateApiDelete(DeleteCardId);
- confirmDeletePopUp.closePopUp();
+  const DeleteCardId = confirmButton.getAttribute("id");
+  updateApiDelete(DeleteCardId);
 }
 
 // UPDATES TO API
@@ -216,21 +216,25 @@ function updateApiDelete(cardId) {
     .deleteCard(cardId)
     .then((result) => {
       console.log(result)
+      confirmDeletePopUp.closePopUp()
     })
     .catch((err) => {
       console.log(err)
     })
 }
 
+// function to update newLikes
+
 
 
 // function to update Api adding a Card like
-function updateApiAddLike(id) {
+function updateApiAddLike(card,id) {
   api
     .addCardLike(id)
     .then((result) => {
       console.log(result, result.likes.length);
-      return result.likes.length;
+      let newLikes =  result.likes.length;
+      card.updateLikes(newLikes);
     })
     .catch((err) => {
       console.log(err)
@@ -238,12 +242,13 @@ function updateApiAddLike(id) {
 }
 
 // function to update Api removing a Card like
-function updateApiRemoveLike(id) {
+function updateApiRemoveLike(card,id) {
   api
     .removeCardLike(id)
     .then((result) => {
       console.log(result, result.likes.length);
-      return result.likes.length;
+      let newLikes =  result.likes.length;
+      card.updateLikes(newLikes);
     })
     .catch((err) => {
       console.log(err)
@@ -256,13 +261,24 @@ function updateApiRemoveLike(id) {
 
 // instructions to create initial cards
 
-api
+// calling both promises together
+Promise.all([promiseforCards, promiseforUser])
+  .then((results) => {
+    console.log(results)
+  })
+  .catch((err) => {
+    console.log(error)
+  })
+
+
+const promiseforCards =
+  api
   .getInitialCards()
   .then((result) => {
     cardList = new Section({
         data: result,
         renderer: (card) => {
-          createCard(card,myId);
+          createCard(card, myId);
         },
       },
       '.elements'
@@ -276,12 +292,13 @@ api
 
 // instructions to get initial user info
 
-api
+const promiseforUser =
+  api
   .getUserInfo()
   .then((result) => {
     console.log(result);
     myId = result._id;
-    user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+    user = new Userinfo(result, nameValue, aboutValue, avatarImage, nameInput, aboutInput);
     user.setUserInfo(result);
     console.log(user);
   })
@@ -296,7 +313,7 @@ const picturePopUp = new PopupWithImage('.popup_type_picture')
 picturePopUp.setEventListeners()
 
 // create confirm delete popup
-const confirmDeletePopUp = new Popup ('.popup_type_confirmDelete');
+const confirmDeletePopUp = new Popup('.popup_type_confirmDelete');
 confirmDeletePopUp.setEventListeners()
 
 // instruction to create form validators

@@ -79,12 +79,9 @@ class Card {
   _likeElement(likeButton) {
     likeButton.classList.toggle('like-button_activated')
     if (likeButton.classList.contains('like-button_activated')) {
-      this._updateApiAddLike(this._id)
-      //this._updateLikes(1)
+      this._updateApiAddLike(this,this._id)
     } else {
-      this._updateApiRemoveLike(this._id);
-      console.log(newLikes);
-      //this._updateLikes(0)
+      this._updateApiRemoveLike(this,this._id);
     }
   }
 
@@ -108,11 +105,10 @@ class Card {
   }
 
   /* update number of likes */
-  updateLikes(likes) {
-    const numberOfLikes = this._card.querySelector('.element__like-count')
-    numberOfLikes.textContent = likes
+  updateLikes(newLikes) {
+    let numberOfLikes = this._card.querySelector('.element__like-count');
+    numberOfLikes.textContent = newLikes
   }
-
 
   /* Return ID */
   getCardId() {
