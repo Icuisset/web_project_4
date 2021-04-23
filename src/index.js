@@ -71,6 +71,9 @@ const elementsList = document.querySelector('.elements')
 
 //const myId = '3a51bab15266f7f25acd79d8'
 let myId
+let user
+let cardList
+
 
 const api = new Api({
   baseUrl: 'https://around.nomoreparties.co/v1/group-7',
@@ -84,6 +87,25 @@ const api = new Api({
 //    ALL FUNCTIONS
 ///////////////////////////////////////
 
+// CARD CREATION
+
+function createCard(newPlace,myId) {
+  const newPlaceCard = new Card(
+    newPlace,
+    myId,
+    '.element-template',
+    openPopUpOnClick,
+    openConfirmDelete,
+    updateApiDelete,
+    updateApiAddLike,
+    updateApiRemoveLike
+  )
+  const newCreatedCard = newPlaceCard.createCard()
+  cardList.addCard(newCreatedCard) 
+}
+
+
+
 // FORM SUBMISSIONS
 
 // function to submit profile form and update user info
@@ -94,21 +116,21 @@ function profileFormSubmit() {
     profileAboutInput
   } = profilePopUp.getInputValues()
 
-  nameValue.textContent = profileNameInput
-  aboutValue.textContent = profileAboutInput
-  saveProfileButton.innerHTML = 'Saving...'
+  saveProfileButton.textContent = 'Saving...'
 
   api
     .editUserInfo(profileNameInput, profileAboutInput)
     .then((result) => {
       console.log(result);
-      saveProfileButton.innerHTML = 'Saved'
+      saveProfileButton.textContent = 'Saved'
+      user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+      user.setUserInfo(result);
+      console.log(user);
+      profilePopUp.closePopUp();
     })
     .catch((err) => {
       console.log(err)
     })
-
-  profilePopUp.closePopUp()
 }
 
 // function to submit new Place form and create a new place
@@ -122,32 +144,18 @@ function newPlaceFormSubmit() {
 
   newPlace.name = placeTitleInput
   newPlace.link = placeImageLinkInput
-  createPlaceButton.innerHTML = 'Saving...'
+  createPlaceButton.textContent = 'Saving...'
 
 
   // post New created Card to Api
   api
     .postNewCard(placeTitleInput, placeImageLinkInput)
     .then((result) => {
-      createPlaceButton.innerHTML = 'Saved'
+      createPlaceButton.textContent = 'Saved'
       console.log(result._id)
       newPlace._id = result._id
-      const newPlaceCard = new Card(
-        newPlace,
-        myId,
-        '.element-template',
-        openPopUpOnClick,
-        openConfirmDelete,
-        updateApiDelete,
-        updateApiAddLike,
-        updateApiRemoveLike
-      )
-
-      const newCreatedPlaceCard = newPlaceCard.createCard()
-
-      elementsList.prepend(newCreatedPlaceCard)
-
-      newPlacePopUp.closePopUp()
+      createCard(newPlace, myId);
+      newPlacePopUp.closePopUp();
     })
     .catch((err) => {
       console.log(err)
@@ -157,31 +165,27 @@ function newPlaceFormSubmit() {
 // function to submit new Avatar image and update profile image
 
 function newAvatarFormSubmit() {
+  const values = newAvatarPopUp.getInputValues();
+  const link = values.avatarLink;
 
-  const link = document
-    .querySelector('.popup__input_value_newAvatarLink')
-    .value;
   if (link == '') {
     console.log('no input');
   } else {
     console.log(link);
-    avatarImage.style.backgroundImage = 'url(' + link + ')';
-    console.log(avatarImage);
-    saveAvatarButton.innerHTML = 'Saving...';
-
+    saveAvatarButton.textContent = 'Saving...';
     // post New Avatar link to Api
     api
       .editUserAvatar(link)
       .then((result) => {
         console.log(result);
-        avatarImage.style.backgroundImage = 'url(' + result.avatar + ')'
-        saveAvatarButton.innerHTML = 'Saved'
+        user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+        user.setUserInfo(result);
+        saveAvatarButton.textContent = 'Saved'
+        newAvatarPopUp.closePopUp()
       })
       .catch((err) => {
         console.log(err)
       })
-
-    newAvatarPopUp.closePopUp()
   }
 }
 
@@ -255,21 +259,10 @@ function updateApiRemoveLike(id) {
 api
   .getInitialCards()
   .then((result) => {
-    const cardList = new Section({
+    cardList = new Section({
         data: result,
         renderer: (card) => {
-          const newCard = new Card(
-            card,
-            myId,
-            '.element-template',
-            openPopUpOnClick,
-            openConfirmDelete,
-            updateApiDelete,
-            updateApiAddLike,
-            updateApiRemoveLike
-          )
-          const newCreatedCard = newCard.createCard()
-          cardList.addCard(newCreatedCard)
+          createCard(card,myId);
         },
       },
       '.elements'
@@ -288,13 +281,14 @@ api
   .then((result) => {
     console.log(result);
     myId = result._id;
-    console.log(myId);
-    const user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
+    user = new Userinfo(result,nameValue,aboutValue,avatarImage, nameInput, aboutInput);
     user.setUserInfo(result);
+    console.log(user);
   })
   .catch((err) => {
     console.log(err)
   })
+
 
 // create picture popup
 
