@@ -2,7 +2,7 @@
   "name": "practicum",
   "version": "2.0.1",
   "description": "practicum project.",
-  "main": "index.js",
+  "main": "./page/index.js",
   "author": "Isabelle Cuisset",
   "license": "MIT",
   "scripts": {

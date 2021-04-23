@@ -3,19 +3,19 @@
 ///////////////////////////////////////
 
 // Test import of styles
-import './page/index.css'
+import './index.css'
 
 
-import FormValidator from './components/formValidator.js'
-import Card from './components/card.js'
-import PopupWithImage from './components/popupWithImage.js'
-import PopupWithForm from './components/popupWithForm.js'
-import PopupWithConfirmation from './components/popupWithConfirmation.js'
+import FormValidator from '././components/formValidator.js'
+import Card from '././components/card.js'
+import PopupWithImage from '././components/popupWithImage.js'
+import PopupWithForm from '././components/popupWithForm.js'
+import PopupWithConfirmation from '././components/popupWithConfirmation.js'
 
-import Userinfo from './components/userInfo.js'
-import Section from './components/section.js'
-import Api from './components/api.js'
-import Popup from './components/popup.js'
+import Userinfo from '././components/userInfo.js'
+import Section from '././components/section.js'
+import Api from '././components/api.js'
+
 
 ///////////////////////////////////////
 //    GLOBAL VARIABLES
@@ -42,7 +42,7 @@ import {
   createPlaceButton
 }
 from
-'./components/utils/constants.js'
+'././components/utils/constants.js'
 
 // initial form settings
 /*

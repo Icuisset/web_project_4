@@ -1,6 +1,7 @@
 import {
   confirmButton
-} from '../index.js';
+} from '../components/utils/constants.js';
+
 class Card {
   constructor(
     cardData,
