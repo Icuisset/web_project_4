@@ -106,7 +106,7 @@ class Card {
 
   /* update number of likes */
   updateLikes(newLikes) {
-    let numberOfLikes = this._card.querySelector('.element__like-count');
+    const numberOfLikes = this._card.querySelector('.element__like-count');
     numberOfLikes.textContent = newLikes
   }
 

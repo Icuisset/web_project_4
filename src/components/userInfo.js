@@ -1,9 +1,5 @@
 export default class UserInfo {
-  constructor(userData, nameValue, aboutValue, avatarImage, nameInput, aboutInput) {
-    this._name = userData.name
-    this._about = userData.about
-    this._avatar = userData.avatar
-    this._id = userData._id
+  constructor(nameValue, aboutValue, avatarImage, nameInput, aboutInput) {
 
     this._nameValue = nameValue
     this._aboutValue = aboutValue
@@ -18,22 +14,21 @@ export default class UserInfo {
   }
 
   getUserName() {
-    return this._name
+    return this._nameValue.textContent
   }
 
   getUserAbout() {
-    return this._about
+    return this._aboutValue.textContent
   }
 
   getUserAvatar() {
     return this._avatar
   }
 
+
   setUserInfo(userData) {
-    this._nameValue.textContent = this._name
-    this._aboutValue.textContent = this._about
-    this._avatarImage.style.backgroundImage = "url('" + this._avatar + "')"
-    this._nameInput.placeholder = this._name
-    this._aboutInput.placeholder = this._about
+    this._nameValue.textContent = userData.name
+    this._aboutValue.textContent = userData.about
+    this._avatarImage.style.backgroundImage = "url('" + userData.avatar + "')"
   }
 }

@@ -42,59 +42,12 @@ import {
   createPlaceButton,
   confirmButton
 }
-from
-'../components/utils/constants.js'
-
-// initial form settings
-/*
-const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible',
-}
-*/
-// access general buttons
-/*
-const editButton = document.querySelector('.edit-button')
-const addButton = document.querySelector('.add-button')
-const confirmButton = document.querySelector('.confirm-button')
-*/
-
-// access profile form
-//const formElementProfile = document.querySelector('.popup__form_type_profile')
-//const nameInput = formElementProfile.querySelector('.popup__input_value_name')
-//const aboutInput = formElementProfile.querySelector('.popup__input_value_about')
-//const nameValue = document.querySelector('.profile__name')
-//const aboutValue = document.querySelector('.profile__about')
-//const saveProfileButton = document.querySelector('.save-button')
-
-// access avatar form
-//const formElementAvatar = document.querySelector('.popup__form_type_newAvatar')
-//const saveAvatarButton = document.querySelector('.saveAvatar-button')
-//const avatarImage = document.querySelector('.avatar')
-//const avatarHover = document.querySelector('.avatar-hover')
-
-
-// access place form
-//const formElementPlace = document.querySelector('.popup__form_type_newPlace')
-//const placeTitleInput = formElementPlace.querySelector(
-//  '.popup__input_value_placeTitle'
-//)
-//const placeImageUrl = formElementPlace.querySelector(
-//  '.popup__input_value_placeImageLink'
-//)
-//const createPlaceButton = document.querySelector('.create-button')
-
-
+from '../components/utils/constants.js'
 
 
 //const myId = '3a51bab15266f7f25acd79d8'
 let myId
 console.log(myId);
-let user
 let cardList
 
 
@@ -105,6 +58,9 @@ const api = new Api({
     'Content-Type': 'application/json',
   },
 })
+
+// create User
+const user = new Userinfo(nameValue, aboutValue, avatarImage, nameInput, aboutInput);
 
 ///////////////////////////////////////
 //    ALL FUNCTIONS
@@ -125,7 +81,8 @@ function createCard(newPlace, myId) {
     confirmButton
   )
   const newCreatedCard = newPlaceCard.createCard()
-  cardList.addCard(newCreatedCard)
+  return newCreatedCard
+  //cardList.addCard(newCreatedCard)
 }
 
 
@@ -138,16 +95,16 @@ function profileFormSubmit() {
   const {
     profileNameInput,
     profileAboutInput
-  } = profilePopUp.getInputValues()
+  } = profilePopUp.getInputValues();
 
-  saveProfileButton.textContent = 'Saving...'
+  saveProfileButton.textContent = 'Saving...';
 
   api
     .editUserInfo(profileNameInput, profileAboutInput)
     .then((result) => {
       console.log(result);
       saveProfileButton.textContent = 'Saved';
-      updateUserInfo(result);
+      user.setUserInfo(result);
       console.log(user);
       profilePopUp.closePopUp();
     })
@@ -174,10 +131,9 @@ function newPlaceFormSubmit() {
   api
     .postNewCard(placeTitleInput, placeImageLinkInput)
     .then((result) => {
-      createPlaceButton.textContent = 'Saved'
-      console.log(result._id)
-      newPlace._id = result._id
-      createCard(newPlace, myId);
+      createPlaceButton.textContent = 'Saved';
+      const newCreatedCard = createCard(result, myId);
+      cardList.addCard(newCreatedCard);
       newPlacePopUp.closePopUp();
     })
     .catch((err) => {
@@ -201,7 +157,7 @@ function newAvatarFormSubmit() {
       .editUserAvatar(link)
       .then((result) => {
         console.log(result);
-        updateUserInfo(result);
+        user.setUserInfo(result);
         saveAvatarButton.textContent = 'Saved'
         newAvatarPopUp.closePopUp()
       })
@@ -223,11 +179,6 @@ function openConfirmDelete() {
   confirmDeletePopUp.openPopUp()
 }
 
-// delete card - moved to popupWihtConfirmation method
-//function deleteCard() {
-//  const DeleteCardId = confirmButton.getAttribute("id");
-//  updateApiDelete(DeleteCardId);
-//}
 
 // UPDATES TO API
 
@@ -250,7 +201,7 @@ function updateApiAddLike(card, id) {
     .addCardLike(id)
     .then((result) => {
       console.log(result, result.likes.length);
-      let newLikes = result.likes.length;
+      const newLikes = result.likes.length;
       card.updateLikes(newLikes);
     })
     .catch((err) => {
@@ -264,7 +215,7 @@ function updateApiRemoveLike(card, id) {
     .removeCardLike(id)
     .then((result) => {
       console.log(result, result.likes.length);
-      let newLikes = result.likes.length;
+      const newLikes = result.likes.length;
       card.updateLikes(newLikes);
     })
     .catch((err) => {
@@ -272,18 +223,15 @@ function updateApiRemoveLike(card, id) {
     })
 }
 
-// function to update Userinfo
-function updateUserInfo(info) {
-  user = new Userinfo(info, nameValue, aboutValue, avatarImage, nameInput, aboutInput);
-  user.setUserInfo(info);
-}
+
 
 // function to update CardList
 function updateCardList(info) {
   cardList = new Section({
       data: info,
       renderer: (card) => {
-        createCard(card, myId);
+        const newCreatedCard = createCard(card, myId);
+        cardList.addCard(newCreatedCard);
       },
     },
     '.elements'
@@ -295,17 +243,26 @@ function updateCardList(info) {
 //    ACTIONS TO INITIALISE PAGE
 ///////////////////////////////////////
 
-// instructions to create initial cards
-
+// instructions to create initial cards and user info
 // calling both promises together
-Promise.all([promiseforCards, promiseforUser])
-  .then((results) => {
-    console.log(results)
+
+Promise.all([api.getInitialCards(), api.getUserInfo()])
+  .then(([cards, userData]) => {
+    updateCardList(cards);
+    console.log(cards);
+    console.log(userData);
+    myId = userData._id;
+    user.setUserInfo(userData);
+    nameInput.value = userData.name;
+    aboutInput.value = userData.about;
+    console.log(user);
   })
   .catch((err) => {
-    console.log(error)
+    console.log(err)
   })
 
+
+//Promise syntax individual - NOT NEEDED BUT KEEPING FOR PERSONAL REFERENCE
 
 const promiseforCards =
   api
@@ -319,16 +276,17 @@ const promiseforCards =
   })
 
 
-
-// instructions to get initial user info
+//Promise syntax individual - NOT NEEDED BUT KEEPING FOR PERSONAL REFERENCE
 
 const promiseforUser =
-  api
+api
   .getUserInfo()
   .then((result) => {
-    console.log(result);
+        console.log(result);
     myId = result._id;
-    updateUserInfo(result);
+    user.setUserInfo(result);
+    nameInput.value = result.name;
+    aboutInput.value = result.about;
     console.log(user);
   })
   .catch((err) => {
@@ -384,7 +342,9 @@ newAvatarPopUp.setEventListeners()
 // instructions for edit profile button
 
 editButton.addEventListener('click', () => {
-  profilePopUp.openPopUp()
+  profilePopUp.openPopUp();
+  nameInput.value = user.getUserName();
+  aboutInput.value = user.getUserAbout();
 })
 
 // instructions for add button
@@ -393,11 +353,6 @@ addButton.addEventListener('click', () => {
   newPlacePopUp.openPopUp()
 })
 
-// instruction for confirm button when deleting a card
-
-//confirmButton.addEventListener('click', () => {
-//  deleteCard()
-//})
 
 // instruction for avatar image on click
 avatarImage.addEventListener('click', () => {
@@ -412,17 +367,3 @@ avatarImage.addEventListener('mouseover', () => {
 avatarImage.addEventListener('mouseout', () => {
   avatarHover.style.opacity = 0
 })
-
-
-
-///////////////////////////////////////
-//    EXPORT
-////////////////////////////////////////
-/*
-export {
-  nameInput,
-  aboutInput,
-  placeTitleInput,
-  placeImageUrl
-}
-*/
