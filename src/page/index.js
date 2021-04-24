@@ -39,7 +39,8 @@ import {
   formElementPlace,
   placeTitleInput,
   placeImageUrl,
-  createPlaceButton
+  createPlaceButton,
+  confirmButton
 }
 from
 '../components/utils/constants.js'
@@ -120,7 +121,8 @@ function createCard(newPlace, myId) {
     openConfirmDelete,
     updateApiDelete,
     updateApiAddLike,
-    updateApiRemoveLike
+    updateApiRemoveLike,
+    confirmButton
   )
   const newCreatedCard = newPlaceCard.createCard()
   cardList.addCard(newCreatedCard)

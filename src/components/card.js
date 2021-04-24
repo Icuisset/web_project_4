@@ -1,7 +1,3 @@
-import {
-  confirmButton
-} from '../components/utils/constants.js';
-
 class Card {
   constructor(
     cardData,
@@ -11,7 +7,8 @@ class Card {
     openConfirmDelete,
     updateApiDelete,
     updateApiAddLike,
-    updateApiRemoveLike
+    updateApiRemoveLike,
+    confirmButton
   ) {
     this._name = cardData.name
     this._link = cardData.link
@@ -39,6 +36,8 @@ class Card {
     this._updateApiDelete = updateApiDelete
     this._updateApiAddLike = updateApiAddLike
     this._updateApiRemoveLike = updateApiRemoveLike
+
+    this._confirmButton = confirmButton
   }
 
   _getTemplate() {
@@ -51,10 +50,10 @@ class Card {
   // CHECK IF OK TO DELETE
 
   _confirmToDelete(deleteButton) {
-    console.log(confirmButton);
-    confirmButton.addEventListener('click', () => {
-      if(confirmButton.id + "ok" === deleteButton.id )
-      { console.log(confirmButton.id + "ok" === deleteButton.id );
+    console.log(this._confirmButton);
+    this._confirmButton.addEventListener('click', () => {
+      if(this._confirmButton.id + "ok" === deleteButton.id )
+      { console.log(this._confirmButton.id + "ok" === deleteButton.id );
         const deletedCard = deleteButton.closest(".element");
         deletedCard.remove();}
     });
@@ -68,7 +67,7 @@ class Card {
     if (this._owner === this._userID) {
       deleteButton.addEventListener('click', () => {
         this._openConfirmDelete();
-        confirmButton.setAttribute("id", this._id);
+        this._confirmButton.setAttribute("id", this._id);
         deleteButton.setAttribute("id", this._id + "ok");
         this._confirmToDelete(deleteButton);
       });
