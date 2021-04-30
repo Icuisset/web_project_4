@@ -32,4 +32,4 @@ The project has been compiled with Webpack and is published on personal live ser
 
 **Link to Published project**
 
-* [Link to the published project](https://icuisset.github.io/web_project_4)
+* [Link to the published project](https://world-tour-s22p5.ondigitalocean.app/)
