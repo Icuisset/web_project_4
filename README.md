@@ -32,4 +32,4 @@ The project has been compiled with Webpack and is published on personal live ser
 
 **Link to Published project**
 
-* [Link to the published project](https://world-tour-s22p5.ondigitalocean.app/)
+* [Link to the published project](https://around-the-world-fj3g5.ondigitalocean.app/)
